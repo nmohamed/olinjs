@@ -50,7 +50,6 @@ module.exports.listCats = listCats;
 
 var newCat = function(req, res){
 	var cat = renderCat();
-	console.log(cat);
 	res.render('newcat', cat);
 	db.addCat(cat);
 };

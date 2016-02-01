@@ -11,6 +11,9 @@ var cats = require('./routes/cats');
 
 var hbs = exphbs.create({defaultLayout: 'main'});
 
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/database');
+
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
