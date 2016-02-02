@@ -1,4 +1,5 @@
 var Cat = require('./models/catModel.js');
+var mongoose = require('mongoose');
 
 var FakeDatabase = module.exports = {
 
@@ -6,30 +7,18 @@ var FakeDatabase = module.exports = {
 
     addCat: function(obj) {
         var cat = new Cat(obj);
-        console.log(obj);
-        console.log(cat);
+        //console.log(obj.name);
+        console.log(cat.name);
         cat.save(function (err) {
             if (err) {
                 console.log("Error occured when adding cat.", err);
+            } else {
+                console.log("Success!");
             }
         });
-        //console.log('adding cat! ' + cat);
 
         //adds item to end of array holding data
         FakeDatabase.data.push(obj);
-    },
-
-    getAll: function() {
-        var allMyCats = Cat.find({}, function(err, cats) {
-            return cats;
-        });
-        //returns copy of array of all items in the database
-        return allMyCats.slice();
-        //return FakeDatabase.data.slice();
-    },
-
-    getColor: function(color) {
-        return Cat.find({color: color}, callback);
     },
 
     removeCat: function(index) {

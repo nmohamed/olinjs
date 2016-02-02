@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var db = require('../fakeDatabase');
 
 var path = require('path');
 var catData = require('./catData');
@@ -9,8 +8,8 @@ var numColors = catColors.length;
 var catNames = catData.names;
 var numNames = catNames.length;
 
-var cats = {};
-
+var Cat = require('../models/catModel.js');
+var mongoose = require('mongoose');
 
 function renderCat(){
 	var cat = {
@@ -21,70 +20,86 @@ function renderCat(){
 	return cat;
 }
 
-var listCats = function(req, res){
-	var allCats = db.getAll();
-	// If listing by color...
-	if (req.params.color) {
-		var color = req.params.color.toLowerCase();
-		var sortedCats = [];
-		for (var i = 0; i < allCats.length; i++) {
-			if (allCats[i].color.toLowerCase() === color){
-				console.log("your cats: " + allCats[i]);
-				sortedCats.push(allCats[i]);
-			}
-		};
 
-		res.render('cats', {
-			message: color,
-			cats: sortedCats
-		});
-	} else {
-		res.render('cats', {
-			message: 'nice',
-			cats: allCats
-		});
-	}
+var listCats = function(req, res){
+	Cat.find({}, function(err, allCats) { 
+		// If listing by color...
+		if (req.params.color) {
+			var color = req.params.color.toLowerCase();
+			var sortedCats = [];
+			for (var i = 0; i < allCats.length; i++) {
+				if (allCats[i].color.toLowerCase() === color){
+					console.log("your cats: " + allCats[i]);
+					sortedCats.push(allCats[i]);
+				}
+			};
+
+			res.render('cats', {
+				message: color,
+				cats: sortedCats
+			});
+		} else {
+			res.render('cats', {
+				message: 'nice',
+				cats: allCats
+			});
+		}
+
+	});
 };
 
 module.exports.listCats = listCats;
 
 var newCat = function(req, res){
 	var cat = renderCat();
-	res.render('newcat', cat);
-	db.addCat(cat);
+
+	var newCat = new Cat(cat);
+        newCat.save(function (err) {
+            if (err) {
+                console.log("Error occured when adding cat.", err);
+            } else {
+                console.log("Success!");
+                res.render('newcat', cat);
+            }
+        });
+
 };
 
 module.exports.newCat = newCat;
 
 var deleteCat = function(req, res){
-	var cats = db.getAll();
+	Cat.find({}, function(err, cats) { 
+		if (cats.length === 0) {
+			res.render('newcat', {
+				name: 'wait a second you dont have any cats',
+				color: 'no',
+				age: "doesn't exist"
+			});
+		} else {
+			var lastCat = cats.length - 1;
+			var sortedCats = cats.slice();
+			sortedCats.sort(function(a, b){
+				return b.age - a.age;
+			});
 
-	if (cats.length === 0) {
-		res.render('newcat', {
-			name: 'wait a second you dont have any cats',
-			color: 'no',
-			age: "doesn't exist"
-		});
-	} else {
-		var lastCat = cats.length - 1;
-		var sortedCats = cats.slice();
-		sortedCats.sort(function(a, b){
-			return b.age - a.age;
-		});
+			var index = function catIndex(){
+				for (var i = 0; i < cats.length; i++) {
+					if (cats[i] === sortedCats[0]){
+						return i;
+					}
+				};
+			}();
 
-		res.render('newcat', sortedCats[0]);
-
-
-		function catIndex(){
-			for (var i = 0; i < cats.length; i++) {
-				if (cats[i] === sortedCats[0]){
-					return i;
+			Cat.remove(cats[index], function (err) {
+				if (err) {
+					console.log(err);
+				} else {
+					console.log("successfully removed cat: " + cats[index]);
+					res.render('newcat', sortedCats[0]);
 				}
-			};
+			});
 		}
-
-		db.removeCat(catIndex());
-	}
+	});
 };
 
 module.exports.deleteCat = deleteCat;
