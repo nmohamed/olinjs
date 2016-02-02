@@ -25,19 +25,25 @@ var listCats = function(req, res){
 	Cat.find({}, function(err, allCats) { 
 		// If listing by color...
 		if (req.params.color) {
-			var color = req.params.color.toLowerCase();
+			var colord = req.params.color.toLowerCase();
 			var sortedCats = [];
-			for (var i = 0; i < allCats.length; i++) {
-				if (allCats[i].color.toLowerCase() === color){
-					console.log("your cats: " + allCats[i]);
-					sortedCats.push(allCats[i]);
-				}
-			};
-
-			res.render('cats', {
-				message: color,
-				cats: sortedCats
+			Cat.find({color: {$eq: colord }}, function(err, colorCats){
+				res.render('cats', {
+					message: colord,
+					cats: colorCats
+				});
 			});
+			// for (var i = 0; i < allCats.length; i++) {
+			// 	if (allCats[i].color.toLowerCase() === color){
+			// 		console.log("your cats: " + allCats[i]);
+			// 		sortedCats.push(allCats[i]);
+			// 	}
+			// };
+
+			// res.render('cats', {
+			// 	message: color,
+			// 	cats: sortedCats
+			// });
 		} else {
 			res.render('cats', {
 				message: 'nice',
