@@ -29,5 +29,4 @@ app.get('/cats/new', cats.newCat);
 app.get('/cats/bycolor/:color', cats.listCats);
 app.get('/cats/delete/old', cats.deleteCat);
 
-
 app.listen(3000);

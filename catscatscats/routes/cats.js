@@ -25,11 +25,13 @@ var listCats = function(req, res){
 	Cat.find({}, function(err, allCats) { 
 		// If listing by color...
 		if (req.params.color) {
-			var colord = req.params.color.toLowerCase();
+			var colord = req.params.color;
+			colord = colord[0].toUpperCase() + colord.slice(1);
+			console.log(colord);
 			var sortedCats = [];
-			Cat.find({color: {$eq: colord }}, function(err, colorCats){
+			Cat.find({color: {$nin: colord}}, function(err, colorCats){
 				res.render('cats', {
-					message: colord,
+					message: "not " + colord,
 					cats: colorCats
 				});
 			});
