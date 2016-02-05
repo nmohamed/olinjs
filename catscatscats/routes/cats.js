@@ -30,6 +30,7 @@ var listCats = function(req, res){
 			console.log(colord);
 			var sortedCats = [];
 			Cat.find({color: {$nin: colord}}, function(err, colorCats){
+				//handle err
 				res.render('cats', {
 					message: "not " + colord,
 					cats: colorCats
@@ -65,6 +66,8 @@ var newCat = function(req, res){
         newCat.save(function (err) {
             if (err) {
                 console.log("Error occured when adding cat.", err);
+                //You will want to signal to the client that an error occurred
+                res.status(500).send("Error something bad")
             } else {
                 console.log("Success!");
                 res.render('newcat', cat);
@@ -76,6 +79,11 @@ var newCat = function(req, res){
 module.exports.newCat = newCat;
 
 var deleteCat = function(req, res){
+	//I'd recommend using findOneAndRemove
+	// Cat.findOneAndRemove({}, {sort:"-age"}, function(err, cat){
+	//  if (err) return res.status(500).send("ERROR"); 
+	// 	res.send(cat);
+	// })
 	Cat.find({}, function(err, cats) { 
 		if (cats.length === 0) {
 			res.render('newcat', {
