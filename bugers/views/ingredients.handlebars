@@ -2,16 +2,18 @@
 <p>
 <center><h1>current ingredients in stock</h1></center>
 	<!-- TEMPLATE -->
-	<!-- <form class="inStock" id="template" action="delete" method="POST">
+	<form class="inStock" id="template" action="delete" method="POST">
 	  <div id = "in">ingredient, $ price</div>
 
-	  <input type="text" class="edit-form" name="edit-ingredient">
-	  <input type="text" class="edit-form" name="edit-price">
-	  <input type="submit" class="edit-form" value="submit"> <br>
+	  <div id="edit-form">
+		  <input type="text" name="edit-ingredient">
+		  <input type="text" name="edit-price">
+		  <input type="submit" class="edit-submit" value="submit"> 
+	  </div><br>
 
 	  <input type="button" class="edit" value="edit">
 	  <input type="submit" class="submit" value="out of stock">
-	</form> -->
+	</form>
 <div id="inStockIngredients">
 
 	<!-- ACUTAL ITEMS -->
@@ -20,9 +22,11 @@
 	  <div id = "in">{{ingredient}}, $ {{price}}</div>
 
 	  <!-- HIDDEN BUTTONS -->
-	  <!-- <input type="text" class="edit-form" name="edit-ingredient">
-	  <input type="text" class="edit-form" name="edit-price">
-	  <input type="submit" class="edit-form" value="submit"> <br> -->
+	  <div id="edit-form">
+		  <input type="text" name="edit-ingredient">
+		  <input type="text" name="edit-price">
+		  <input type="submit" class="edit-submit" value="submit">
+	  </div><br>
 
 	  <input type="button" class="edit" value="edit">
 	  <input type="submit" class="submit" value="out of stock">

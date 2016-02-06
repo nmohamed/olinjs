@@ -31,14 +31,11 @@ module.exports.ingredientsPOST = ingredientsPOST;
 
 //DELETE ingredients from db
 var ingredientsDELETE = function(req, res){
-	console.log('deleting id: ' + req.body._id);
-	Ingredients.find({_id: req.body._id}, function(err, ingredient) {
-		Ingredients.remove(req.body._id, function (err) {
-			if (err) console.log(err);
-			else console.log("successfully removed ingredient");
-		});
+	var id = req.body._id;
+	Ingredients.findOneAndRemove({_id: id}, function (err, data) {
+		if (err) console.log('err:', err);
+		else res.send({message: 'deleted ingredient ' + id});
 	});
-	res.send({message: 'deleted ingredients!!!!'});
 };
 
 module.exports.ingredientsDELETE = ingredientsDELETE;

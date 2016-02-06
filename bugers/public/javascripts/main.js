@@ -1,6 +1,7 @@
 var $div = $('#inStockIngredients');
 var $newIngredient = $('#newIngredient');
 var $inStock = $('.inStock');
+var $edit = $('.edit');
 
 // ADD NEW INGREDIENT
 $newIngredient.submit(function (event) {
@@ -29,8 +30,8 @@ var onSuccess = function(data, status) {
 	// console.log($div.html());
 };
 
-// CHANGE CURRENT INGREDIENTS
 
+// MAKING OUT OF STOCK
  function inStockBIND (event) {
 			var self = this;
 			event.preventDefault();
@@ -41,14 +42,18 @@ var onSuccess = function(data, status) {
 			})
 				.done(function (data, status) {
 					console.log(data.message);
-					console.log($div.html());
 					$(self).remove();
-					console.log($div.html());
 				})
 				.error(onError);
  };
 
 $inStock.submit(inStockBIND);
+
+// EDIT INGREDIENT
+$edit.click(function() {
+	console.log('click!', this);
+	// $('#edit-form').show();
+});
 
 var onError = function(data, status) {
   console.log("status", status);
