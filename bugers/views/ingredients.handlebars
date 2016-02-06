@@ -1,0 +1,41 @@
+<a href="/">&lt;-- home</a>
+<p>
+<center><h1>current ingredients in stock</h1></center>
+	<!-- TEMPLATE -->
+	<!-- <form class="inStock" id="template" action="delete" method="POST">
+	  <div id = "in">ingredient, $ price</div>
+
+	  <input type="text" class="edit-form" name="edit-ingredient">
+	  <input type="text" class="edit-form" name="edit-price">
+	  <input type="submit" class="edit-form" value="submit"> <br>
+
+	  <input type="button" class="edit" value="edit">
+	  <input type="submit" class="submit" value="out of stock">
+	</form> -->
+<div id="inStockIngredients">
+
+	<!-- ACUTAL ITEMS -->
+{{#each inStock}}
+	<form class="inStock" id="{{_id}}" action="delete" method="POST">
+	  <div id = "in">{{ingredient}}, $ {{price}}</div>
+
+	  <!-- HIDDEN BUTTONS -->
+	  <!-- <input type="text" class="edit-form" name="edit-ingredient">
+	  <input type="text" class="edit-form" name="edit-price">
+	  <input type="submit" class="edit-form" value="submit"> <br> -->
+
+	  <input type="button" class="edit" value="edit">
+	  <input type="submit" class="submit" value="out of stock">
+	</form>
+{{/each}}
+</div>
+<p>
+
+<center>
+<h1>add ingredients</h1>
+	<form id="newIngredient" action="ingredientsPOST" method="POST">
+		ingredient: <input type="text" id="ingredient">
+		price: $<input type="text" id="price">
+		<input type="submit" class="addBu" value="add">
+	</form>
+</center>
