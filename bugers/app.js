@@ -27,9 +27,10 @@ app.get('/', index.home);
 app.get('/ingredients', shop.ingredientsGET);
 app.post('/delete', shop.ingredientsDELETE);
 app.post('/ingredients', shop.ingredientsPOST);
-app.get('/order', shop.newOrder);
-app.get('/kitchen', shop.allOrders);
-
+app.get('/order', shop.order);
+app.post('/makeOrder', shop.makeOrder);
+app.get('/kitchen', shop.kitchen);
+app.post('/deleteKitchen', shop.deleteKitchen);
 
 
 app.listen(3000);

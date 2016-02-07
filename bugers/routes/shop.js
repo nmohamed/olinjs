@@ -1,6 +1,7 @@
 var Burger = require('../models/burgerModel.js');
 var Ingredients = require('../models/ingredientsModel.js');
 var mongoose = require('mongoose');
+var path = require('path');
 
 /* INGREDIENTS PAGE */
 
@@ -19,11 +20,11 @@ module.exports.ingredientsGET = ingredientsGET;
 var ingredientsPOST = function(req, res){
 	var ing = new Ingredients(req.body);
 	ing.save(function (err) {
-		if (err) console.log("errorr occured when adding ingredient", err);
+		if (err) console.log("error occured when adding ingredient", err);
 		else console.log('ingredient added successfully.');
 	});
 	req.body.id = ing.id;
-	res.send(req.body);
+	res.send({message: "added: " + req.body});
 };
 
 module.exports.ingredientsPOST = ingredientsPOST;
@@ -43,16 +44,53 @@ module.exports.ingredientsDELETE = ingredientsDELETE;
 
 /* ORDERS PAGE */
 
-var newOrder = function(req, res){
-	res.render('newOrder', 'neworder');
+var order = function(req, res){
+	Ingredients.find({}, function(err, ingredients){
+		res.render('order', {
+			inStock: ingredients
+		});
+	});
 };
 
-module.exports.newOrder = newOrder;
+module.exports.order = order;
+
+var makeOrder = function(req, res){
+	var burger = new Burger({ingredients: req.body['ingr[]'], total: req.body.total});
+	burger.save(function (err) {
+	 	if (err) console.log('err:', err);
+	 	//else res.sendFile(path.join(__dirname, "../public/images/cat.jpg"));
+	 	else res.send({message: 'added order'});
+	 });
+};
+
+module.exports.makeOrder = makeOrder;
+
 
 /* KITCHEN PAGE */
 
-var allOrders = function(req, res){
-	res.render('allOrders', 'sdf');
+// show current orders
+var kitchen = function(req, res){
+	Burger.find({}, function(err, burger_content){
+		console.log(burger_content.ingredients + ", at price of "  +burger_content.total);
+		for (var key in burger_content) {
+		   console.log(key + ": " + burger_content);
+		}
+
+
+		res.render('kitchen', {
+			burger: burger_content
+		});
+	});
 };
 
-module.exports.allOrders = allOrders;
+module.exports.kitchen = kitchen;
+
+var deleteKitchen = function (req, res) {
+	var id = req.body._id;
+	Burger.findOneAndRemove({_id: id}, function (err, data) {
+		if (err) console.log('err:', err);
+		else res.send({message: 'deleted burger ' + id});
+	});
+};
+
+module.exports.deleteKitchen = deleteKitchen;
