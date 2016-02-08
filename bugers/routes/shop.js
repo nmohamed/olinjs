@@ -24,7 +24,7 @@ var ingredientsPOST = function(req, res){
 		else console.log('ingredient added successfully.');
 	});
 	req.body.id = ing.id;
-	res.send({message: "added: " + req.body});
+	res.send(req.body);
 };
 
 module.exports.ingredientsPOST = ingredientsPOST;
@@ -40,6 +40,21 @@ var ingredientsDELETE = function(req, res){
 };
 
 module.exports.ingredientsDELETE = ingredientsDELETE;
+
+//EDIT ingredients from db
+var ingredientsEDIT = function (req, res){
+	var id = req.body._id;
+	var ingr = req.body.ingredient;
+	var price = req.body.price;
+	console.log(id + ": " + ingr + ", $ " + price);
+
+	Ingredients.findOneAndUpdate({_id: id}, req.body, function (err, ingredient){
+		if (err) console.log(err);
+		else res.send({message: 'edited ingredient ' + id});
+	});
+};
+
+module.exports.ingredientsEDIT = ingredientsEDIT;
 
 
 /* ORDERS PAGE */
@@ -58,8 +73,7 @@ var makeOrder = function(req, res){
 	var burger = new Burger({ingredients: req.body['ingr[]'], total: req.body.total});
 	burger.save(function (err) {
 	 	if (err) console.log('err:', err);
-	 	//else res.sendFile(path.join(__dirname, "../public/images/cat.jpg"));
-	 	else res.send({message: 'added order'});
+	 	else res.sendFile(path.join(__dirname, "../public/images/cat.jpg"));
 	 });
 };
 
@@ -71,12 +85,6 @@ module.exports.makeOrder = makeOrder;
 // show current orders
 var kitchen = function(req, res){
 	Burger.find({}, function(err, burger_content){
-		console.log(burger_content.ingredients + ", at price of "  +burger_content.total);
-		for (var key in burger_content) {
-		   console.log(key + ": " + burger_content);
-		}
-
-
 		res.render('kitchen', {
 			burger: burger_content
 		});

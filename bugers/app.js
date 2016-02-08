@@ -27,6 +27,7 @@ app.get('/', index.home);
 app.get('/ingredients', shop.ingredientsGET);
 app.post('/delete', shop.ingredientsDELETE);
 app.post('/ingredients', shop.ingredientsPOST);
+app.post('/edit', shop.ingredientsEDIT);
 app.get('/order', shop.order);
 app.post('/makeOrder', shop.makeOrder);
 app.get('/kitchen', shop.kitchen);

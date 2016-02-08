@@ -19,9 +19,9 @@ b {
 }
 
 #template {
-  display: none;
+	display: none;
 }
 
-#edit-form {
-	/*display: none;*/
+.edit-div {
+	display: none;
 }

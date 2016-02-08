@@ -1,7 +1,12 @@
 var $div = $('#inStockIngredients');
 var $newIngredient = $('#newIngredient');
 var $inStock = $('.inStock');
-var $edit = $('.edit');
+
+var onError = function(data, status) {
+  console.log("status", status);
+  console.log("error", data);
+};
+
 
 /* INGREDIENT PAGE */
 
@@ -19,17 +24,15 @@ $newIngredient.submit(function (event) {
 		.error(onError);
 });
 
+// MAKE NEW INGREDIENT APPEAR
 var onSuccess = function(data, status) {
-	// MAKE NEW INGREDIENT APPEAR
 	var $newForm = $inStock.first().clone();
-	$newForm.find('div').text(data.ingredient + ', $ '+ data.price);
+	$newForm.find('div#in').text(data.ingredient + ', $ '+ data.price);
 	$newForm.attr("id",data.id);
-	$div.append($newForm.clone().wrap('<p>').parent().html());
-	$inStock = $('.inStock').unbind(); //update inStock so it knows that there's a new value
-	
+	$div.append($newForm.clone().wrap('<p>').parent().html()); //outerHTML workaround
+	//update inStock so it knows that there's a new value
+	$inStock = $('.inStock').unbind();
 	$inStock.submit(inStockBIND);
-	// console.log($inStock);
-	console.log($div.html());
 };
 
 
@@ -51,10 +54,37 @@ var onSuccess = function(data, status) {
 
 $inStock.submit(inStockBIND);
 
+
 // EDIT INGREDIENT
-$edit.click(function() {
-	console.log('click!', this);
-	// $('#edit-form').show();
+$('.edit-button').click(function (event) {
+	$editDiv = $(this).parent().find('.edit-div');
+	$editDiv.toggle();
+});
+
+
+// SUBMIT EDITED INGREDIENT
+
+$('.edit-submit').click(function (event) {
+	var ingr = $(this).parent().find('#edit-ingredient').val();//edit-ingredient
+	var price = $(this).parent().find('#edit-price').val();//edit-ingredient
+
+	if (ingr === "" || price === "") {
+		console.log('please input values');
+	} else if (isNaN(price)) {
+		console.log('price must be a number');
+	} else {
+		$(this).parent().parent().find('div#in').text(ingr + ", $" + price);
+		var id = $(this).parent().parent().attr('id');
+		$.post("edit", {
+			_id: id,
+			ingredient: ingr,
+			price: price
+		})
+			.done(function (data, status) {
+				console.log(data.message);
+			})
+			.error(onError);;
+	}
 });
 
 
@@ -83,13 +113,7 @@ $('form#order-form').submit(function (event) {
 	    allIngredients.push($(this).attr('name'));
 	})
 
-	console.log(allIngredients);
-
 	var $checkbox = $('.check-order');
-	if ($checkbox.is(':checked')) {
-		console.log($checkbox);
-	}
-
 	var curVal = $('#price').html();
 
 	$.post("makeOrder", {
@@ -119,8 +143,3 @@ $('.kitchen-order').submit(function (event) {
 		})
 		.error(onError);
 });
-
-var onError = function(data, status) {
-  console.log("status", status);
-  console.log("error", data);
-};
