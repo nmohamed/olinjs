@@ -1,0 +1,15 @@
+<a href="/">&lt;-- home</a>
+<p>
+<center><h1>new order</h1></center>
+
+	<form id="order-form" action="makeOrder" method="POST">
+	{{#each inStock}}
+		<input  class="check-order"
+				type="checkbox" 
+				id="{{_id}}"
+				name="{{ingredient}}" 
+				value="{{price}}"/> {{ingredient}}, $ {{price}} <br>
+	{{/each}}<p>
+	Price: $<span id="price">0</span>
+		<input type="submit" value="make order">
+	</form>

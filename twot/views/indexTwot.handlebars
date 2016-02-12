@@ -1,0 +1,23 @@
+<a href="/">logout</a>
+<p>
+all users: --
+<p>
+
+<center>
+<h1>make twot</h1>
+	<form id="newTwot" action="addTwot" method="POST">
+		twot: <input type="text" id="inputTwot"> <input type="submit" value="TWOT">
+	</form>
+</center>
+
+<p>
+
+<center><h1>twots</h1></center>
+<div id="allTwots">
+	{{#each allTwots}}
+		<div class="twot" id="{{_id}}">
+			<span id="tw">@{{username}}: {{twot}}</span>
+			
+		</div>
+	{{/each}}
+</div>

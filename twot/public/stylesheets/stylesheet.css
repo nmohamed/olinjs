@@ -1,0 +1,27 @@
+body {
+	font-family: "helvetica narrow";
+}
+
+h1 {
+  color: #1C6C6C;
+  font-family: "helvetica";
+}
+
+a {
+	color: #A22A4C;
+	font-weight: bold;
+	font-family: "helvetica";
+}
+
+b {
+	color: #B4912E;
+	font-family: "courier new";
+}
+
+#template {
+	display: none;
+}
+
+.edit-div {
+	display: none;
+}

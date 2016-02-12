@@ -1,0 +1,11 @@
+<a href="/">&lt;-- home</a>
+<p>
+<center><h1>kitchen</h1></center>
+
+{{#each burger}}
+	<form class="kitchen-order" id="{{_id}}" action="delete" method="POST">
+	  $ {{total}} - {{#each ingredients}}{{this}}-{{/each}}burger
+	  <!-- {{#each burger}}{{ingredient}}{{/each}} burger, totaling $ {{total_price}} -->
+	  <input type="submit" class="submit" value="done">
+	</form>
+{{/each}}
