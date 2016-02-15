@@ -1,23 +1,22 @@
-<a href="/">logout</a>
-<p>
-all users: --
-<p>
-
-<center>
-<h1>make twot</h1>
-	<form id="newTwot" action="addTwot" method="POST">
-		twot: <input type="text" id="inputTwot"> <input type="submit" value="TWOT">
-	</form>
-</center>
-
+<div id="current">{{{currentUser}}}</div><p>
+<div id="users">
+{{#each users}} - {{username}}{{else}} - no users{{/each}} - 
+</div>
 <p>
 
-<center><h1>twots</h1></center>
+<h1>twot</h1>
+
+<form id="newTwot" action="addTwot" method="POST">
+	twot: <input type="text" id="inputTwot"> <input type="submit" value="TWOT">
+</form>
+
 <div id="allTwots">
 	{{#each allTwots}}
-		<div class="twot" id="{{_id}}">
-			<span id="tw">@{{username}}: {{twot}}</span>
-			
-		</div>
+		<form class="twotForm" id="{{_id}}" action="delete" method="POST">
+			<div class="twot">
+				<span id="tw">@{{username}}: {{twot}}</span>
+				<input type="submit" value="DELETE">
+			</div>
+		</form>
 	{{/each}}
 </div>

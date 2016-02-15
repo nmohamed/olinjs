@@ -5,6 +5,7 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 var index = require('./routes/index');
 
@@ -21,8 +22,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({ 
+  secret: 'superS3CRE7',
+  resave: false,
+  saveUninitialized: false ,
+  cookie: {}
+}));
 
-app.get('/', index.login);
+app.get('/', index.loginPage);
+app.post('/login', index.login);
 app.get('/index', index.indexTwot);
 app.post('/delete', index.deleteTwot);
 app.post('/add', index.addTwot);
