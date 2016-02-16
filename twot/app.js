@@ -33,6 +33,14 @@ app.use(session({
 
 /* GOOGLE AUTHENTICATION */
 
+var findOrCreate = require('mongoose-findorcreate')
+var userSchema = mongoose.Schema({
+  username: String,
+  password: String
+});
+userSchema.plugin(findOrCreate);
+var User = mongoose.model('User', userSchema);
+
 var auth = require('./auth');
 passport.use(new GoogleStrategy({
     clientID: auth.clientID,
@@ -41,7 +49,8 @@ passport.use(new GoogleStrategy({
     returnURL: 'localhost:3000/index'
   },
   function(accessToken, refreshToken, profile, cb) {
-      User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      User.find({ googleId: profile.id }, function (err, user) {
+
         return cb(err, user);
       });
     }
@@ -66,10 +75,10 @@ app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile'] }));
 
 app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/FAIL' }),
+  passport.authenticate('google', { failureRedirect: '/' }),
   function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/SUCCESS');
+    console.log("Successful authentication, redirecting home");
+    app.post('/login', index.login);
   });
 
 app.get('/user', ensureAuthenticated, function(req, res) {
