@@ -31,7 +31,7 @@ a:hover {
 }
 
 /* Google Fonts */
-@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+/*@import url(http://fonts.googleapis.com/css?family=Open+Sans);*/
 
 /* css for the shiny buttons */
 .btn {
@@ -47,23 +47,23 @@ a:hover {
 }
 
 .delete {
-  color: #0871E7;
-  border: 2px #0871E7 solid;
+  color: #FF6C00;
+  border: 2px #FF6C00 solid;
   
 }
 
 .delete:hover {
-  background-color: #0871E7;
+  background-color: #FF6C00;
   color: #fff
 }
 
 .twotbtn {
-  color: #FF9A00;
-  border: 2px #FF9A00 solid;
+  color: #FF9C00;
+  border: 2px #FF9C00 solid;
 }
 
 .twotbtn:hover {
-  background-color: #FF9A00;
+  background-color: #FF9C00;
   color: #fff
 }
 
@@ -78,13 +78,12 @@ a:hover {
 }
 
 
-
 #template {
 	display: none;
 }
 
 #incorrect{
-	color: #B4912E;
+	color: #00E6C6;
 }
 
 #holder{
@@ -112,7 +111,7 @@ a:hover {
 }
 
 #current {
-
+	padding: 10px;
 }
 
 #twotHolder {
