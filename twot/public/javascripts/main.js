@@ -10,7 +10,7 @@ var onError = function(data, status) {
 };
 
 
-/* INGREDIENT PAGE */
+/* TWOT PAGE */
 
 // ADD TWOT
 $newTwot.submit(function (event) {
@@ -28,7 +28,7 @@ var showNewTwot = function(data, status) {
 		$allTwots.prepend(
 			'<form class="twotForm" id="' + data.id + '" action="delete" method="POST">' + 
 			'<div class="twot"><span id="tw">@' + data.username + ': ' + data.twot + 
-			'</span> <input type="submit" value="DELETE"></div></form>');
+			'</span> <span class="deleteDiv"><input type="submit" value="X" class="btn delete"></span></div></form>');
 		//rebind allTwots so deleteTwot knows there is a new Twot available to delete
 		$allTwots.unbind().submit(deleteTwot);
 	} else if (data.message === false) {
@@ -62,8 +62,22 @@ var showNewTwot = function(data, status) {
 		.error(onError);
  };
 
-$twotForm.click(deleteTwot);
+$twotForm.submit(deleteTwot);
 
+// VIEW TWOTS BY USER
+$('.user').click(function (event){
+	var username = $(this).attr('id');
+	$(".twot").css('background-color', '#f2f2f2');
+	$(".twot").each(function(i, obj) {
+		var usernameHTML = $(obj).find("#tw").html();
+			// console.log(i+ ": " + usernameHTML);
+		var objUsername = usernameHTML.substring(1, usernameHTML.indexOf(":"));
+		if (objUsername === username){
+			$(obj).css('background-color', '#FF9A00');
+		}
+	});
+	//do css stuff
+});
 
 /* LOG IN */
 
@@ -89,37 +103,3 @@ $loginForm.submit(function (event) {
 		})
 		.error(onError);
 });
-
-
-
-// // EDIT INGREDIENT
-// $('.edit-button').click(function (event) {
-// 	$editDiv = $(this).parent().find('.edit-div');
-// 	$editDiv.toggle();
-// });
-
-
-// // SUBMIT EDITED INGREDIENT
-
-// $('.edit-submit').click(function (event) {
-// 	var ingr = $(this).parent().find('#edit-ingredient').val();//edit-ingredient
-// 	var price = $(this).parent().find('#edit-price').val();//edit-ingredient
-
-// 	if (ingr === "" || price === "") {
-// 		console.log('please input values');
-// 	} else if (isNaN(price)) {
-// 		console.log('price must be a number');
-// 	} else {
-// 		$(this).parent().parent().find('div#in').text(ingr + ", $" + price);
-// 		var id = $(this).parent().parent().attr('id');
-// 		$.post("edit", {
-// 			_id: id,
-// 			ingredient: ingr,
-// 			price: price
-// 		})
-// 			.done(function (data, status) {
-// 				console.log(data.message);
-// 			})
-// 			.error(onError);;
-// 	}
-// });

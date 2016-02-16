@@ -120,17 +120,3 @@ var deleteTwot = function(req, res){
 
 module.exports.deleteTwot = deleteTwot;
 
-//edit twot
-var editTwot = function (req, res){
-	var id = req.body._id;
-	var twot = req.body.twot;
-	var username = req.body.username;
-	console.log(id + ": @" + username + " - " + twot);
-
-	Twots.findOneAndUpdate({_id: id}, req.body, function (err, twots){
-		if (err) console.log(err);
-		else res.send({message: 'edited twot ' + id});
-	});
-};
-
-module.exports.editTwot = editTwot;

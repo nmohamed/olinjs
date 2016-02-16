@@ -1,22 +1,30 @@
 <div id="current">{{{currentUser}}}</div><p>
-<div id="users">
-{{#each users}} - {{username}}{{else}} - no users{{/each}} - 
-</div>
-<p>
 
-<h1>twot</h1>
+<div id="holder">
 
-<form id="newTwot" action="addTwot" method="POST">
-	twot: <input type="text" id="inputTwot"> <input type="submit" value="TWOT">
-</form>
+	<div id="users"><h1><center>users</center></h1>
+	{{#each users}}<div id="{{username}}" class="user">{{username}}</div>{{else}}no users{{/each}} 
+	</div>
 
-<div id="allTwots">
-	{{#each allTwots}}
-		<form class="twotForm" id="{{_id}}" action="delete" method="POST">
-			<div class="twot">
-				<span id="tw">@{{username}}: {{twot}}</span>
-				<input type="submit" value="DELETE">
-			</div>
-		</form>
-	{{/each}}
+	<div id="twotHolder">
+		<h1><center>twot</center></h1>
+		<div id="newTwotForm">
+			<form id="newTwot" action="addTwot" method="POST">
+				twot: <input type="text" id="inputTwot"> <input type="submit" value="+" class="btn twotbtn">
+			</form>
+		</div>
+		
+
+		<div id="allTwots">
+			{{#each allTwots}}
+				<form class="twotForm" id="{{_id}}" action="delete" method="POST">
+					<div class="twot">
+						<span id="tw" class="info">@{{username}}: {{twot}}</span>
+						<span class="deleteDiv"><input type="submit" value="X" class="btn delete"></span>
+					</div>
+				</form><p>
+			{{/each}}
+		</div>
+	</div>
+
 </div>

@@ -34,7 +34,6 @@ app.post('/login', index.login);
 app.get('/index', index.indexTwot);
 app.post('/delete', index.deleteTwot);
 app.post('/add', index.addTwot);
-app.post('/edit', index.editTwot);
 
 
 app.listen(3000);
