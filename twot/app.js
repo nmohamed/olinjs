@@ -36,8 +36,9 @@ app.use(session({
 var findOrCreate = require('mongoose-findorcreate')
 var userSchema = mongoose.Schema({
   username: String,
-  password: String
+  googleId: String
 });
+
 userSchema.plugin(findOrCreate);
 var User = mongoose.model('User', userSchema);
 
@@ -49,8 +50,8 @@ passport.use(new GoogleStrategy({
     returnURL: 'localhost:3000/index'
   },
   function(accessToken, refreshToken, profile, cb) {
-      User.find({ googleId: profile.id }, function (err, user) {
-
+      User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      	user.username = profile.displayName;
         return cb(err, user);
       });
     }
@@ -78,7 +79,9 @@ app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   function(req, res) {
     console.log("Successful authentication, redirecting home");
-    app.post('/login', index.login);
+    console.log("user:", req.user.username);
+    req.session.username = req.user.username;
+    res.redirect('/index');
   });
 
 app.get('/user', ensureAuthenticated, function(req, res) {

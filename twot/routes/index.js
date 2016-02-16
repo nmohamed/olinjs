@@ -95,7 +95,8 @@ var addTwot = function(req, res){
 		res.send({
 			username: req.session.username,
 			twot: req.body.twot,
-			message: true
+			message: true,
+			id: req.body.id
 		});
 	} else {
 		res.send({message: false});

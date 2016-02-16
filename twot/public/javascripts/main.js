@@ -30,7 +30,10 @@ var showNewTwot = function(data, status) {
 			'<div class="twot"><span id="tw">@' + data.username + ': ' + data.twot + 
 			'</span> <span class="deleteDiv"><input type="submit" value="X" class="btn delete"></span></div></form>');
 		//rebind allTwots so deleteTwot knows there is a new Twot available to delete
-		$allTwots.unbind().submit(deleteTwot);
+		console.log($twotForm);
+		delete $twotForm;
+		$twotForm = $(".twotForm");
+		$twotForm.submit(deleteTwot);
 	} else if (data.message === false) {
 		console.log('Please log in');
 	}
