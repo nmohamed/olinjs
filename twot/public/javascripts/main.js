@@ -5,7 +5,7 @@ var $twotForm = $('.twotForm');
 var $loginForm = $('#loginForm');
 
 var onError = function(data, status) {
-  console.log("status", status);;
+  console.log("status", status);
   console.log("error", data);
 };
 
@@ -63,7 +63,7 @@ var showNewTwot = function(data, status) {
 			}
 		})
 		.error(onError);
- };
+ }
 
 $twotForm.submit(deleteTwot);
 

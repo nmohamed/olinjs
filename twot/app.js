@@ -33,7 +33,7 @@ app.use(session({
 
 /* GOOGLE AUTHENTICATION */
 
-var findOrCreate = require('mongoose-findorcreate')
+var findOrCreate = require('mongoose-findorcreate');
 var userSchema = mongoose.Schema({
   username: String,
   googleId: String
@@ -57,7 +57,7 @@ passport.use(new GoogleStrategy({
     }
 ));
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({ secret: 'this is not a secret ;)',
   resave: false,
   saveUninitialized: false }));
@@ -78,15 +78,15 @@ app.get('/auth/google',
 app.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/' }),
   function(req, res) {
-    console.log("Successful authentication, redirecting home");
-    console.log("user:", req.user.username);
+    console.log('Successful authentication, redirecting home');
+    console.log('user:', req.user.username);
     req.session.username = req.user.username;
     res.redirect('/index');
   });
 
 app.get('/user', ensureAuthenticated, function(req, res) {
   res.send(req.user);
-})
+});
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
@@ -101,4 +101,10 @@ app.get('/index', index.indexTwot);
 app.post('/delete', index.deleteTwot);
 app.post('/add', index.addTwot);
 
-app.listen(3000);
+
+var PORT = process.env.PORT || 3000;
+app.listen(PORT, function() {
+  console.log('Application running on port:', PORT);
+});
+
+module.exports = app;
