@@ -121,6 +121,7 @@ $('form#order-form').submit(function (event) {
 				total: curVal
 	})
 		.done(function (data, status) {
+			// data.message is undefined.
 			console.log(data.message);
 		})
 		.error(onError);

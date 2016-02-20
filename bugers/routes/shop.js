@@ -5,6 +5,13 @@ var path = require('path');
 
 /* INGREDIENTS PAGE */
 
+
+// As a general reccomendation, you can export all the routes as an obejct routes = {}.
+// In that object you can include all methods of your API by doing routes.ingredientesGET = function(){...}
+
+// The benefit of this method is that you can export all of the methods with only
+// one line of code module.exports = routes, instead of multiple exports for each method :)
+
 //GET ingredients from db
 var ingredientsGET = function(req, res){
 	Ingredients.find({}, function(err, ingredients){
@@ -18,6 +25,7 @@ module.exports.ingredientsGET = ingredientsGET;
 
 //POST new ingredients to db
 var ingredientsPOST = function(req, res){
+	// Check that the ingredients has a price that is only numbers (12f is not a valid price and you should notify the user)
 	var ing = new Ingredients(req.body);
 	ing.save(function (err) {
 		if (err) console.log("error occured when adding ingredient", err);
@@ -46,6 +54,8 @@ var ingredientsEDIT = function (req, res){
 	var id = req.body._id;
 	var ingr = req.body.ingredient;
 	var price = req.body.price;
+
+	// Remove all log statements from your "final" version of the app that sits in the master branch
 	console.log(id + ": " + ingr + ", $ " + price);
 
 	Ingredients.findOneAndUpdate({_id: id}, req.body, function (err, ingredient){
@@ -70,6 +80,12 @@ var order = function(req, res){
 module.exports.order = order;
 
 var makeOrder = function(req, res){
+	// The reason you cannot access req.body.ingr and you do it like that (req.body["ingr[]"]), is
+	// because jQuery POST reqs that include a list of strings as the value of a key in the POST-able
+	// object, are not stringified. What this means is that you can change line 120 in your
+	// main.js form ingr: allIngredients to ingr: JSON.stringify(allIngredients) and you are now able to 
+	// access them as req.body.ingr :)
+
 	var burger = new Burger({ingredients: req.body['ingr[]'], total: req.body.total});
 	burger.save(function (err) {
 	 	if (err) console.log('err:', err);
