@@ -1,118 +1,127 @@
-var data = [
-  {id: 1, author: "Pete Hunt", text: "This is one comment ;-)"},
-  {id: 2, author: "Jordan Walke", text: "This is *another* comment :-0"}
-];
+/*
+  Nora Mohamed 2015
+  Todo app for olin.js
+*/
 
-// tutorial2.js
-var CommentList = React.createClass({
-  render: function() {
-    var commentNodes = this.props.data.map(function(comment) {
-      return (
-        <Comment author={comment.author} key={comment.id}>
-          {comment.text}
-        </Comment>
-      );
+var data = [
+  {id: 1, text: "This is one comment ;-)", checked: false},
+  {id: 2, text: "This is *another* comment :-0", checked: false}
+];
+var count = 2; 
+
+var TodoHolder = React.createClass({
+  getInitialState: function() {
+    return ({data: data});
+  },
+  handleTodoSubmit: function(item) {
+    this.setState({data: data});
+  },
+  getItemNodes: function() {
+    var pendingItemNodes = this.state.data.map(function(item) {
+      if (item.checked === false) {
+        return (
+          <TodoItem key={item.id} text={item.text} checked={item.checked} />
+        );
+      }
     });
+    console.log("pendingItemNodes", pendingItemNodes);
+    var doneItemNodes = this.state.data.map(function(item) {
+      if (item.checked === true) {
+        return (
+          <TodoItem key={item.id} text={item.text} checked={item.checked} />
+        );
+      }
+    });
+
+    return({pendingItemNodes: pendingItemNodes, doneItemNodes: doneItemNodes});
+  },
+  render: function() {
+    var nodes = this.getItemNodes();
     return (
-      <div className="commentList">
-        {commentNodes}
+      <div className="todoHolder">
+        <TodoForm handleTodoSubmit={this.handleTodoSubmit} />
+        <TodoList pendingItemNodes={nodes.pendingItemNodes} doneItemNodes={nodes.doneItemNodes}/>
       </div>
     );
   }
 });
 
-var CommentForm = React.createClass({
+
+var TodoForm = React.createClass({
   getInitialState: function() {
-    return {author: '', text: ''};
-  },
-  handleAuthorChange: function(e) {
-    this.setState({author: e.target.value});
+    return {text: ''};
   },
   handleTextChange: function(e) {
     this.setState({text: e.target.value});
   },
   handleSubmit: function(e) {
     e.preventDefault();
-    var author = this.state.author.trim();
     var text = this.state.text.trim();
-    if (!text || !author) {
+    if (!text) {
       return;
     }
-    // TODO: send request to the server
-    this.setState({author: '', text: ''});
+    var item = {id: count+1, text:text, checked:false};
+    data.push(item);
+    count = count+1;
+    this.props.handleTodoSubmit(item);
+    this.setState({text: ''});
   },
   render: function() {
     return (
-      <form className="commentForm" onSubmit={this.handleSubmit}>
+      <form className="todoForm" onSubmit={this.handleSubmit}>
         <input
           type="text"
-          placeholder="Your name"
-          value={this.state.author}
-          onChange={this.handleAuthorChange}
-        />
-        <input
-          type="text"
-          placeholder="Say something..."
+          placeholder="Add new task"
           value={this.state.text}
-          onChange={this.handleTextChange}
-        />
-        <input type="submit" value="Post" />
+          onChange={this.handleTextChange} />
+        <input type="submit" value="+"/>
       </form>
     );
   }
 });
 
 
-var CommentBox = React.createClass({
-  getInitialState: function() {
-    return {data: [{author: 'Author', text:'Comment'}]};
-  },
-  componentDidMount: function() {
-    $.ajax({
-      url: this.props.url,
-      dataType: 'json',
-      cache: false,
-      success: function(data) {
-        this.setState({data: data});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
+var TodoList = React.createClass({
   render: function() {
     return (
-      <div className="commentBox">
-        <h1>Comments</h1>
-        <CommentList data={this.state.data} />
-        <CommentForm />
+      <div className="todoList">
+        <h1>TODO:</h1>
+        <div className="pendingTodoList">
+          {this.props.pendingItemNodes}
+        </div><br></br>
+        <h1>DONE:</h1>
+        <div className="doneTodoList">
+          {this.props.doneItemNodes}
+        </div>
       </div>
     );
   }
 });
 
 
-// tutorial4.js
-var Comment = React.createClass({
-  rawMarkup: function() {
-    var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
-    return { __html: rawMarkup };
+var TodoItem = React.createClass({
+  getInitialState: function() {
+    return {text: this.props.text};
   },
-
+  handleEdit: function(event) {
+    this.setState({text: event.target.value});
+    console.log("a'");
+  },
+  handleClick: function(event) {
+    this.setState({checked: event.target.checked});
+    //this.props.key
+  },
   render: function() {
     return (
-      <div className="comment">
-        <h2 className="commentAuthor">
-          {this.props.author}
-        </h2>
-        <span dangerouslySetInnerHTML={this.rawMarkup()} />
-       </div>
+      <div className="todoItem" contentEditable="true" onChange={this.handleEdit}>
+         <input type="checkbox" checked={this.state.checked || this.props.checked} onClick={this.handleClick} />
+          {this.state.text}
+      </div>
     );
   }
 });
 
 ReactDOM.render(
-  <CommentBox data={data} />,
-  //  <CommentBox url="/api/comments" />,
+  <TodoHolder data={data} />,
   document.getElementById('content')
 );

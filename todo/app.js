@@ -1,15 +1,14 @@
 var express = require('express');
 var app = express();
+var exphbs = require('express-handlebars');
 var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
-
-var index = require('./routes/index');
-
-// var mongoose = require('mongoose');
-// mongoose.connect('mongodb://localhost/todoDB');
+var hbs = exphbs.create({defaultLayout: 'main'});
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -23,9 +22,9 @@ app.use(session({
   cookie: {}
 }));
 
+
+var index = require('./routes/index');
 app.get('/', index.home);
-// app.post('/add', index.add);
-// app.post('/remove', index.remove);
 
 var PORT = process.env.PORT || 3000;
 app.listen(PORT, function() {
