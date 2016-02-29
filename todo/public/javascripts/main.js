@@ -16,19 +16,30 @@ var TodoHolder = React.createClass({
   handleTodoSubmit: function(item) {
     this.setState({data: data});
   },
+  handleDelete: function(id){
+    var deleted = data
+      .filter(function (item) {
+            return item.id !== id;
+       });
+    console.log(id, deleted);
+    data = deleted;
+    this.setState({data: deleted});
+  },
   getItemNodes: function() {
+    var parentThis = this;
     var pendingItemNodes = this.state.data.map(function(item) {
       if (item.checked === false) {
         return (
-          <TodoItem key={item.id} text={item.text} checked={item.checked} />
+          <TodoItem key={item.id} id={item.id} text={item.text} 
+            checked={item.checked} handleDelete={parentThis.handleDelete} />
         );
       }
     });
-    console.log("pendingItemNodes", pendingItemNodes);
     var doneItemNodes = this.state.data.map(function(item) {
       if (item.checked === true) {
         return (
-          <TodoItem key={item.id} text={item.text} checked={item.checked} />
+          <TodoItem key={item.id} id={item.id} text={item.text}
+            checked={item.checked} handleDelete={parentThis.handleDelete} />
         );
       }
     });
@@ -101,21 +112,24 @@ var TodoList = React.createClass({
 
 var TodoItem = React.createClass({
   getInitialState: function() {
-    return {text: this.props.text};
+    return {text: this.props.text, id: this.props.id};
   },
   handleEdit: function(event) {
     this.setState({text: event.target.value});
-    console.log("a'");
   },
   handleClick: function(event) {
     this.setState({checked: event.target.checked});
-    //this.props.key
   },
   render: function() {
     return (
-      <div className="todoItem" contentEditable="true" onChange={this.handleEdit}>
+      <div className="todoItem">
          <input type="checkbox" checked={this.state.checked || this.props.checked} onClick={this.handleClick} />
-          {this.state.text}
+          <div className="todoText" contentEditable="true" onChange={this.handleEdit}>
+            {this.state.text}
+          </div> 
+          <div className="deleteButton" onClick={this.props.handleDelete.bind(this, this.state.id)}>
+            <b>X</b>
+          </div>
       </div>
     );
   }
