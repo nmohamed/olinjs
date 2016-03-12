@@ -3,9 +3,11 @@ var Twots = require('../models/twotModel.js');
 var mongoose = require('mongoose');
 var path = require('path');
 
+// Nitpick: js style has 4 spaces per tab not 8
 /* LOGIN PAGE */
 
 //show log in page
+// you might want to use passports req.logout() method to deal with logging out
 var loginPage = function(req, res){
 	console.log('user:', req.session.username);
 	if (typeof req.session.username !== 'undefined'){ // already logged in
@@ -109,6 +111,7 @@ module.exports.addTwot = addTwot;
 var deleteTwot = function(req, res){
 	if (req.session.username === req.body.username){
 		var id = req.body._id;
+                //nice use of mongoose compound methods
 		Twots.findOneAndRemove({_id: id}, function (err, data) {
 			if (err) console.log('err:', err);
 			else res.send({message: true});

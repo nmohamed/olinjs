@@ -1,3 +1,4 @@
+// You really really shouldn't push your api keys and secrets. It is /very/ insecure
 var auth = {
     clientID: '701481820963-bmgv0t1doelqnlp75poaikshqldkar35.apps.googleusercontent.com',
     clientSecret: 'xHpzoy0GQxoOjUAUOrj4MMZK',
