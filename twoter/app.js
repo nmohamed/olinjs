@@ -32,7 +32,7 @@ app.use(session({
 }));
 
 /* GOOGLE AUTHENTICATION */
-
+//why do you define your user model here and in userModel.js?
 var findOrCreate = require('mongoose-findorcreate');
 var userSchema = mongoose.Schema({
   username: String,
@@ -80,6 +80,7 @@ app.get('/auth/google/callback',
   function(req, res) {
     console.log('Successful authentication, redirecting home');
     console.log('user:', req.user.username);
+    //req.user is attached to the session so it should be all you need
     req.session.username = req.user.username;
     res.redirect('/index');
   });

@@ -25,6 +25,7 @@ $newTwot.submit(function (event) {
 
 var showNewTwot = function(data, status) {
 	if (data.message === true) {
+                // I'd use the template, clone, modify, append pattern. For an example see the inclass from flex class 5
 		$allTwots.prepend(
 			'<form class="twotForm" id="' + data.id + '" action="delete" method="POST">' + 
 			'<div class="twot"><span id="tw">@' + data.username + ': ' + data.twot + 
