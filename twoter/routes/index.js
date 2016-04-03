@@ -7,7 +7,6 @@ var path = require('path');
 
 //show log in page
 var loginPage = function(req, res){
-	console.log('user:', req.session.username);
 	if (typeof req.session.username !== 'undefined'){ // already logged in
 		delete req.session.username;
 		res.render('loginPage', {message: 'Logged out'});
@@ -44,7 +43,7 @@ var login = function(req, res){
 				res.send({
 					message: true,			//true = correct pw
 					username: user.username
-				}); 
+				});
 			} else {
 				res.send({message: false}); //false = wrong pw
 			}

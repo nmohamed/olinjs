@@ -33,3 +33,4 @@ pids
 **/.DS_Store
 
 isitchristmas
+**/auth.js

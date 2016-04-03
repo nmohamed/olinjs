@@ -19,6 +19,9 @@ describe("The app", function() {
       .get('/')
       .expect('Content-Type', 'text/html; charset=utf-8')
       .expect('Content-Length', '824', done); // ...or this way, inline!
+    // Looks good to me! I'm assuming you're checking content length because
+    // the page at / is static (doesn't change depending on what's in your database) --
+    // we weren't clear enough about that in our example, but it seems like you figured it out.
   });
 
   it('should return 200 OK on GET /index', function(done) {
