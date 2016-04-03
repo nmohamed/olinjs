@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({ 
+app.use(session({
   secret: 'superS3CRE7',
   resave: false,
   saveUninitialized: false ,
@@ -75,11 +75,11 @@ passport.deserializeUser(function(user, done) {
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile'] }));
 
-app.get('/auth/google/callback', 
+app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   function(req, res) {
-    console.log('Successful authentication, redirecting home');
-    console.log('user:', req.user.username);
+    // make sure you clean up your console.logs for production!
+    // particularly important in this context because they clutter up your test console output
     req.session.username = req.user.username;
     res.redirect('/index');
   });
